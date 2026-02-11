@@ -959,12 +959,61 @@ section {
 }
 
 @media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-
     .hamburger {
         display: flex;
+        z-index: 1001;
+        /* Ensure above active menu */
+    }
+
+    /* Mobile Menu Active State */
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 100%;
+        /* Full width */
+        background: rgba(15, 15, 15, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(100%);
+        transition: transform 0.4s ease-in-out;
+        z-index: 1000;
+        display: flex !important;
+        /* Override display:none */
+    }
+
+    .nav-links.active {
+        transform: translateX(0);
+    }
+
+    .nav-links a {
+        font-size: 24px;
+        margin: 20px 0;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+    }
+
+    .nav-links.active a {
+        opacity: 1;
+        transform: translateY(0);
+        /* Staggered animation can be done with nth-child, keeping simple for now */
+    }
+
+    /* Hamburger Animation */
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
     }
 
     .hero-text h1 {
@@ -1081,4 +1130,26 @@ section {
 
 .btn-nav::after {
     display: none !important;
+}
+
+@media (max-width: 480px) {
+    .section-header h2 {
+        font-size: 28px;
+    }
+
+    .hero-text h1 {
+        font-size: 36px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        font-size: 13px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
 }
