@@ -136,25 +136,54 @@ const defaultData = {
             organization: 'TechCrunch Disrupt',
             year: '2022'
         }
-    ]
+    ],
+    design: {
+        theme: 'default',
+        font: "'Poppins', sans-serif"
+    }
 };
 
 // Initialize dashboard
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     loadData();
     setupNavigation();
     setupTabs();
+    setupDesign();
     setupCharacterCount();
     setupImageUpload();
 });
+
+// ===== DESIGN SETTINGS =====
+function setupDesign() {
+    // Theme Selection
+    const themeOptions = document.querySelectorAll('.theme-option');
+    themeOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            // Update UI
+            themeOptions.forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+
+            // Update Data
+            cvData.design.theme = option.getAttribute('data-theme');
+        });
+    });
+
+    // Font Selection
+    const fontSelect = document.getElementById('fontSelect');
+    if (fontSelect) {
+        fontSelect.addEventListener('change', (e) => {
+            cvData.design.font = e.target.value;
+        });
+    }
+}
 
 // ===== IMAGE UPLOAD HANDLING =====
 let currentProfileImage = '';
 
 function setupImageUpload() {
     const fileInput = document.getElementById('profileImage');
-    
-    fileInput.addEventListener('change', function(e) {
+
+    fileInput.addEventListener('change', function (e) {
         const file = e.target.files[0];
         if (file) {
             // Validate file type
@@ -162,20 +191,20 @@ function setupImageUpload() {
                 alert('Please select an image file (JPG, PNG, or GIF)');
                 return;
             }
-            
+
             // Validate file size (max 5MB)
             if (file.size > 5 * 1024 * 1024) {
                 alert('Image size should be less than 5MB');
                 return;
             }
-            
+
             // Convert to base64
             const reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 currentProfileImage = event.target.result;
                 updateImagePreview(currentProfileImage);
             };
-            reader.onerror = function() {
+            reader.onerror = function () {
                 alert('Error reading image file. Please try again.');
             };
             reader.readAsDataURL(file);
@@ -211,6 +240,8 @@ function loadData() {
 function saveAllData() {
     collectFormData();
     localStorage.setItem('cvData', JSON.stringify(cvData));
+    calculateStrength();
+    updatePreview();
     showSuccessMessage();
 }
 
@@ -230,7 +261,7 @@ function populateForm() {
     document.getElementById('jobTitle').value = cvData.personal.jobTitle;
     document.getElementById('age').value = cvData.personal.age;
     document.getElementById('location').value = cvData.personal.location;
-    
+
     // Profile Image - handle both base64 and URL
     if (cvData.personal.profileImage) {
         currentProfileImage = cvData.personal.profileImage;
@@ -239,7 +270,7 @@ function populateForm() {
         currentProfileImage = '';
         updateImagePreview('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop');
     }
-    
+
     // Contact Info
     document.getElementById('phone').value = cvData.contact.phone;
     document.getElementById('email').value = cvData.contact.email;
@@ -247,11 +278,11 @@ function populateForm() {
     document.getElementById('github').value = cvData.contact.github;
     document.getElementById('website').value = cvData.contact.website;
     document.getElementById('twitter').value = cvData.contact.twitter;
-    
+
     // Summary
     document.getElementById('professionalSummary').value = cvData.summary;
     updateCharacterCount();
-    
+
     // Dynamic lists
     renderExperienceList();
     renderEducationList();
@@ -259,6 +290,9 @@ function populateForm() {
     renderProjectsList();
     renderCertificationsList();
     renderAwardsList();
+
+    // Calculate Strength
+    calculateStrength();
 }
 
 // Collect data from form
@@ -269,7 +303,7 @@ function collectFormData() {
     cvData.personal.age = document.getElementById('age').value;
     cvData.personal.location = document.getElementById('location').value;
     cvData.personal.profileImage = currentProfileImage;
-    
+
     // Contact Info
     cvData.contact.phone = document.getElementById('phone').value;
     cvData.contact.email = document.getElementById('email').value;
@@ -277,43 +311,53 @@ function collectFormData() {
     cvData.contact.github = document.getElementById('github').value;
     cvData.contact.website = document.getElementById('website').value;
     cvData.contact.twitter = document.getElementById('twitter').value;
-    
+
     // Summary
     cvData.summary = document.getElementById('professionalSummary').value;
-    
+
     // Experience
     cvData.experience = collectExperienceData();
-    
+
     // Education
     cvData.education = collectEducationData();
-    
+
     // Skills
     cvData.technicalSkills = collectSkillsData('technical');
     cvData.softSkills = collectSkillsData('soft');
-    
+
     // Projects
     cvData.projects = collectProjectsData();
-    
+
     // Certifications
     cvData.certifications = collectCertificationsData();
-    
+
     // Awards
     cvData.awards = collectAwardsData();
+
+    // Design
+    if (cvData.design) {
+        // Theme is already updated by event listener, but ensuring it persists
+        // Font
+        const fontSelect = document.getElementById('fontSelect');
+        if (fontSelect) {
+            cvData.design.font = fontSelect.value;
+        }
+    }
 }
 
 // ===== NAVIGATION =====
 function setupNavigation() {
     const menuItems = document.querySelectorAll('.sidebar-menu li');
     const sections = document.querySelectorAll('.form-section');
-    
+
     menuItems.forEach(item => {
         item.addEventListener('click', () => {
             const targetSection = item.getAttribute('data-section');
-            
+
             // Update active menu item
             menuItems.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
-            
+
             // Show target section
             sections.forEach(section => {
                 section.classList.remove('active');
@@ -329,15 +373,15 @@ function setupNavigation() {
 function setupTabs() {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.skills-content');
-    
+
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const targetTab = btn.getAttribute('data-tab');
-            
+
             // Update active tab button
             tabBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
+
             // Show target content
             tabContents.forEach(content => {
                 content.classList.remove('active');
@@ -365,7 +409,7 @@ function updateCharacterCount() {
 function renderExperienceList() {
     const container = document.getElementById('experienceList');
     container.innerHTML = '';
-    
+
     cvData.experience.forEach((exp, index) => {
         const item = createExperienceItem(exp, index);
         container.appendChild(item);
@@ -458,7 +502,7 @@ function collectExperienceData() {
                 achievements.push(input.value.trim());
             }
         });
-        
+
         return {
             company: item.querySelector('.exp-company').value,
             role: item.querySelector('.exp-role').value,
@@ -473,7 +517,7 @@ function collectExperienceData() {
 function renderEducationList() {
     const container = document.getElementById('educationList');
     container.innerHTML = '';
-    
+
     cvData.education.forEach((edu, index) => {
         const item = createEducationItem(edu, index);
         container.appendChild(item);
@@ -545,7 +589,7 @@ function renderSkillsList() {
     cvData.technicalSkills.forEach((skill, index) => {
         techContainer.appendChild(createSkillItem(skill, index, 'technical'));
     });
-    
+
     // Soft Skills
     const softContainer = document.getElementById('softSkillsList');
     softContainer.innerHTML = '';
@@ -586,7 +630,7 @@ function removeSkill(button, type) {
 function collectSkillsData(type) {
     const nameInputs = document.querySelectorAll(`.skill-name-${type}`);
     const levelInputs = document.querySelectorAll(`.skill-level-${type}`);
-    
+
     const skills = [];
     nameInputs.forEach((input, index) => {
         if (input.value.trim()) {
@@ -603,7 +647,7 @@ function collectSkillsData(type) {
 function renderProjectsList() {
     const container = document.getElementById('projectsList');
     container.innerHTML = '';
-    
+
     cvData.projects.forEach((proj, index) => {
         const item = createProjectItem(proj, index);
         container.appendChild(item);
@@ -695,7 +739,7 @@ function collectProjectsData() {
         item.querySelectorAll('.tech-tag').forEach(tag => {
             technologies.push(tag.textContent.trim());
         });
-        
+
         return {
             name: item.querySelector('.proj-name').value,
             description: item.querySelector('.proj-desc').value,
@@ -710,7 +754,7 @@ function collectProjectsData() {
 function renderCertificationsList() {
     const container = document.getElementById('certificationsList');
     container.innerHTML = '';
-    
+
     cvData.certifications.forEach((cert, index) => {
         const item = createCertificationItem(cert, index);
         container.appendChild(item);
@@ -772,7 +816,7 @@ function collectCertificationsData() {
 function renderAwardsList() {
     const container = document.getElementById('awardsList');
     container.innerHTML = '';
-    
+
     cvData.awards.forEach((award, index) => {
         const item = createAwardItem(award, index);
         container.appendChild(item);
@@ -828,4 +872,124 @@ function collectAwardsData() {
         organization: item.querySelector('.award-org').value,
         year: item.querySelector('.award-year').value
     }));
+}
+
+// ===== DATA PERSISTENCE =====
+function exportData() {
+    const dataStr = JSON.stringify(cvData, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+    const exportFileDefaultName = 'cv-builder-backup.json';
+
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
+
+function importData(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        try {
+            const contents = e.target.result;
+            cvData = JSON.parse(contents);
+            saveAllData(); // Save to local storage
+            populateForm(); // Refresh UI
+            alert('Data imported successfully!');
+        } catch (err) {
+            alert('Error importing data: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+    input.value = ''; // Reset input
+}
+
+// ===== LIVE PREVIEW =====
+function togglePreview() {
+    const container = document.querySelector('.dashboard-container');
+    container.classList.toggle('split-view');
+
+    // Refresh preview when opening
+    if (container.classList.contains('split-view')) {
+        updatePreview();
+    }
+}
+
+function updatePreview() {
+    const frame = document.getElementById('previewFrame');
+    if (frame) {
+        frame.src = frame.src; // Reloads the iframe
+    }
+}
+
+// ===== CV STRENGTH METER =====
+function calculateStrength() {
+    let score = 0;
+    let total = 0;
+
+    // Weights
+    const weights = {
+        personal: 15,
+        contact: 15,
+        summary: 10,
+        experience: 20,
+        education: 15,
+        skills: 15,
+        projects: 10
+    };
+
+    // Personal (15)
+    total += weights.personal;
+    if (cvData.personal.fullName) score += 5;
+    if (cvData.personal.jobTitle) score += 5;
+    if (cvData.personal.profileImage) score += 5;
+
+    // Contact (15)
+    total += weights.contact;
+    if (cvData.contact.email) score += 5;
+    if (cvData.contact.phone) score += 5;
+    if (cvData.contact.linkedin || cvData.contact.github) score += 5;
+
+    // Summary (10)
+    total += weights.summary;
+    if (cvData.summary && cvData.summary.length > 50) score += 10;
+
+    // Experience (20)
+    total += weights.experience;
+    if (cvData.experience.length > 0) score += 20;
+
+    // Education (15)
+    total += weights.education;
+    if (cvData.education.length > 0) score += 15;
+
+    // Skills (15)
+    total += weights.skills;
+    if (cvData.technicalSkills.length > 0 || cvData.softSkills.length > 0) score += 15;
+
+    // Projects (10)
+    total += weights.projects;
+    if (cvData.projects.length > 0) score += 10;
+
+    // Update UI
+    const percentage = Math.round((score / total) * 100);
+    const bar = document.getElementById('strengthBar');
+    const text = document.getElementById('strengthText');
+
+    if (bar) {
+        bar.style.width = percentage + '%';
+
+        // Color coding
+        if (percentage < 40) {
+            bar.style.background = '#ef4444'; // Red
+        } else if (percentage < 70) {
+            bar.style.background = '#f59e0b'; // Orange
+        } else {
+            bar.style.background = '#10b981'; // Green
+        }
+    }
+
+    if (text) text.textContent = percentage + '%';
 }

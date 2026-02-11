@@ -1,5 +1,5 @@
 // ===== LOAD CV DATA FROM LOCALSTORAGE =====
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     loadCVData();
 });
 
@@ -7,14 +7,24 @@ function loadCVData() {
     const savedData = localStorage.getItem('cvData');
     if (savedData) {
         const cvData = JSON.parse(savedData);
-        
+
+        // Apply Design Settings
+        if (cvData.design) {
+            if (cvData.design.theme && cvData.design.theme !== 'default') {
+                document.body.setAttribute('data-theme', cvData.design.theme);
+            }
+            if (cvData.design.font) {
+                document.body.style.fontFamily = cvData.design.font;
+            }
+        }
+
         // Update Personal Info
         if (cvData.personal) {
             const nameEl = document.querySelector('.hero-text h1');
             const titleEl = document.querySelector('.tagline');
             const locationEl = document.querySelector('.location');
             const profileImg = document.querySelector('.profile-image img');
-            
+
             if (nameEl) nameEl.textContent = cvData.personal.fullName || 'Your Name';
             if (titleEl) titleEl.textContent = cvData.personal.jobTitle || 'Job Title';
             if (locationEl) {
@@ -24,14 +34,14 @@ function loadCVData() {
                 profileImg.src = cvData.personal.profileImage;
             }
         }
-        
+
         // Update Contact Info
         if (cvData.contact) {
             const contactItems = document.querySelectorAll('.contact-item');
             contactItems.forEach(item => {
                 const icon = item.querySelector('i');
                 const span = item.querySelector('span');
-                
+
                 if (icon.classList.contains('fa-phone') && cvData.contact.phone) {
                     item.href = `tel:${cvData.contact.phone}`;
                     if (span) span.textContent = cvData.contact.phone;
@@ -50,38 +60,38 @@ function loadCVData() {
                 }
             });
         }
-        
+
         // Update Summary
         if (cvData.summary) {
             const summaryEl = document.querySelector('.summary-text');
             if (summaryEl) summaryEl.textContent = cvData.summary;
         }
-        
+
         // Update Experience
         if (cvData.experience && cvData.experience.length > 0) {
             renderExperience(cvData.experience);
         }
-        
+
         // Update Education
         if (cvData.education && cvData.education.length > 0) {
             renderEducation(cvData.education);
         }
-        
+
         // Update Skills
         if (cvData.technicalSkills || cvData.softSkills) {
             renderSkills(cvData.technicalSkills || [], cvData.softSkills || []);
         }
-        
+
         // Update Projects
         if (cvData.projects && cvData.projects.length > 0) {
             renderProjects(cvData.projects);
         }
-        
+
         // Update Certifications
         if (cvData.certifications && cvData.certifications.length > 0) {
             renderCertifications(cvData.certifications);
         }
-        
+
         // Update Awards
         if (cvData.awards && cvData.awards.length > 0) {
             renderAwards(cvData.awards);
@@ -92,7 +102,7 @@ function loadCVData() {
 function renderExperience(experiences) {
     const container = document.querySelector('.timeline');
     if (!container) return;
-    
+
     container.innerHTML = experiences.map(exp => `
         <div class="experience-card">
             <div class="experience-header">
@@ -112,7 +122,7 @@ function renderExperience(experiences) {
 function renderEducation(education) {
     const container = document.querySelector('.education-cards');
     if (!container) return;
-    
+
     container.innerHTML = education.map(edu => `
         <div class="education-card">
             <div class="edu-icon">
@@ -131,7 +141,7 @@ function renderEducation(education) {
 function renderSkills(technicalSkills, softSkills) {
     const container = document.querySelector('.skills-grid');
     if (!container) return;
-    
+
     const technicalHTML = technicalSkills.length > 0 ? `
         <div class="skill-category">
             <h3>Technical Skills</h3>
@@ -148,7 +158,7 @@ function renderSkills(technicalSkills, softSkills) {
             `).join('')}
         </div>
     ` : '';
-    
+
     const softHTML = softSkills.length > 0 ? `
         <div class="skill-category">
             <h3>Soft Skills</h3>
@@ -165,14 +175,14 @@ function renderSkills(technicalSkills, softSkills) {
             `).join('')}
         </div>
     ` : '';
-    
+
     container.innerHTML = technicalHTML + softHTML;
 }
 
 function renderProjects(projects) {
     const container = document.querySelector('.projects-grid');
     if (!container) return;
-    
+
     container.innerHTML = projects.map(proj => `
         <div class="project-card">
             <div class="project-image">
@@ -196,7 +206,7 @@ function renderProjects(projects) {
 function renderCertifications(certifications) {
     const container = document.querySelector('.cert-grid');
     if (!container) return;
-    
+
     container.innerHTML = certifications.map(cert => `
         <div class="cert-card">
             <i class="fas fa-certificate"></i>
@@ -210,7 +220,7 @@ function renderCertifications(certifications) {
 function renderAwards(awards) {
     const container = document.querySelector('.awards-grid');
     if (!container) return;
-    
+
     container.innerHTML = awards.map(award => `
         <div class="award-card">
             <div class="award-icon">
@@ -226,16 +236,16 @@ function renderAwards(awards) {
 }
 
 // ===== ANIMATED SKILL BARS =====
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const skillBars = document.querySelectorAll('.skill-progress');
-    
+
     // Function to animate skill bars when they come into view
     function animateSkillBars() {
         skillBars.forEach(bar => {
             const progress = bar.getAttribute('data-progress');
             const rect = bar.getBoundingClientRect();
             const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
-            
+
             if (isVisible && !bar.classList.contains('animated')) {
                 bar.classList.add('animated');
                 setTimeout(() => {
@@ -244,10 +254,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     // Initial check
     animateSkillBars();
-    
+
     // Check on scroll
     window.addEventListener('scroll', animateSkillBars);
 });
@@ -272,7 +282,7 @@ let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    
+
     // Add/remove scrolled class for background effect
     if (currentScroll > 100) {
         navbar.style.background = 'rgba(15, 15, 15, 0.98)';
@@ -281,7 +291,7 @@ window.addEventListener('scroll', () => {
         navbar.style.background = 'rgba(15, 15, 15, 0.95)';
         navbar.style.boxShadow = 'none';
     }
-    
+
     lastScroll = currentScroll;
 });
 
@@ -331,7 +341,7 @@ const shapes = document.querySelectorAll('.shape');
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const rate = scrolled * 0.5;
-    
+
     shapes.forEach((shape, index) => {
         const speed = (index + 1) * 0.2;
         shape.style.transform = `translateY(${rate * speed}px)`;
@@ -342,7 +352,7 @@ window.addEventListener('scroll', () => {
 function typeWriter(element, text, speed = 100) {
     let i = 0;
     element.textContent = '';
-    
+
     function type() {
         if (i < text.length) {
             element.textContent += text.charAt(i);
@@ -350,7 +360,7 @@ function typeWriter(element, text, speed = 100) {
             setTimeout(type, speed);
         }
     }
-    
+
     type();
 }
 
@@ -390,16 +400,16 @@ const sections = document.querySelectorAll('section[id]');
 
 window.addEventListener('scroll', () => {
     let current = '';
-    
+
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
-        
+
         if (pageYOffset >= sectionTop - 200) {
             current = section.getAttribute('id');
         }
     });
-    
+
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === `#${current}`) {
@@ -455,12 +465,34 @@ scrollTopBtn.addEventListener('click', () => {
 document.addEventListener('mousemove', (e) => {
     const mouseX = e.clientX / window.innerWidth - 0.5;
     const mouseY = e.clientY / window.innerHeight - 0.5;
-    
+
     const heroContent = document.querySelector('.hero-content');
     if (heroContent) {
         heroContent.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
     }
 });
+
+// ===== PDF EXPORT =====
+function downloadPDF() {
+    const element = document.body;
+    const opt = {
+        margin: 0,
+        filename: 'my-cv.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    // Hide UI elements before generating
+    document.body.classList.add('generating-pdf');
+
+    // Generate PDF
+    html2pdf().set(opt).from(element).save().then(() => {
+        // Restore UI elements
+        document.body.classList.remove('generating-pdf');
+    });
+}
 
 console.log('🚀 CV Website loaded successfully!');
 console.log('✨ All animations and interactivity initialized');

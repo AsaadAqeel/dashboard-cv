@@ -1153,3 +1153,53 @@ section {
         width: 100%;
     }
 }
+
+/* ===== THEMES ===== */
+body[data-theme="blue"] {
+    --violet: #2563eb;
+    --violet-light: #3b82f6;
+    --violet-dark: #1d4ed8;
+    --veronic: #06b6d4;
+    --blue: #0ea5e9;
+    --gradient-primary: linear-gradient(135deg, var(--violet) 0%, var(--veronic) 50%, var(--blue) 100%);
+    --gradient-secondary: linear-gradient(135deg, var(--violet-dark) 0%, var(--violet) 100%);
+}
+
+body[data-theme="green"] {
+    --violet: #059669;
+    --violet-light: #10b981;
+    --violet-dark: #047857;
+    --veronic: #34d399;
+    --blue: #064e3b;
+    --gradient-primary: linear-gradient(135deg, var(--violet) 0%, var(--veronic) 50%, var(--blue) 100%);
+    --gradient-secondary: linear-gradient(135deg, var(--violet-dark) 0%, var(--violet) 100%);
+}
+
+body[data-theme="purple"] {
+    --violet: #9333ea;
+    --violet-light: #a855f7;
+    --violet-dark: #7e22ce;
+    --veronic: #db2777;
+    --blue: #c026d3;
+    --gradient-primary: linear-gradient(135deg, var(--violet) 0%, var(--veronic) 50%, var(--blue) 100%);
+    --gradient-secondary: linear-gradient(135deg, var(--violet-dark) 0%, var(--violet) 100%);
+}
+
+body[data-theme="orange"] {
+    --violet: #ea580c;
+    --violet-light: #f97316;
+    --violet-dark: #c2410c;
+    --veronic: #f59e0b;
+    --blue: #d97706;
+    --gradient-primary: linear-gradient(135deg, var(--violet) 0%, var(--veronic) 50%, var(--blue) 100%);
+    --gradient-secondary: linear-gradient(135deg, var(--violet-dark) 0%, var(--violet) 100%);
+}
+
+/* PDF Generation Helpers */
+body.generating-pdf .navbar,
+body.generating-pdf .hero-buttons,
+body.generating-pdf .scroll-top-btn,
+body.generating-pdf .hamburger,
+body.generating-pdf .btn-nav {
+    display: none !important;
+}
