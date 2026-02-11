@@ -1155,7 +1155,9 @@ section {
 }
 
 /* ===== THEMES ===== */
-html body[data-theme="blue"] {
+/* ===== THEMES ===== */
+body[data-theme="blue"],
+:root[data-theme="blue"] {
     --violet: #2563eb;
     --violet-light: #3b82f6;
     --violet-dark: #1d4ed8;
@@ -1165,7 +1167,8 @@ html body[data-theme="blue"] {
     --gradient-secondary: linear-gradient(135deg, var(--violet-dark) 0%, var(--violet) 100%);
 }
 
-html body[data-theme="green"] {
+body[data-theme="green"],
+:root[data-theme="green"] {
     --violet: #059669;
     --violet-light: #10b981;
     --violet-dark: #047857;
@@ -1175,7 +1178,8 @@ html body[data-theme="green"] {
     --gradient-secondary: linear-gradient(135deg, var(--violet-dark) 0%, var(--violet) 100%);
 }
 
-html body[data-theme="purple"] {
+body[data-theme="purple"],
+:root[data-theme="purple"] {
     --violet: #9333ea;
     --violet-light: #a855f7;
     --violet-dark: #7e22ce;
@@ -1185,7 +1189,8 @@ html body[data-theme="purple"] {
     --gradient-secondary: linear-gradient(135deg, var(--violet-dark) 0%, var(--violet) 100%);
 }
 
-html body[data-theme="orange"] {
+body[data-theme="orange"],
+:root[data-theme="orange"] {
     --violet: #ea580c;
     --violet-light: #f97316;
     --violet-dark: #c2410c;
