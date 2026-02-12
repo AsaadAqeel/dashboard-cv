@@ -771,6 +771,25 @@ function renderCertificationsList() {
     });
 }
 
+function handleCertFileUpload(input) {
+    const file = input.files[0];
+    if (file) {
+        if (file.size > 5 * 1024 * 1024) {
+            alert('File size too large. Max 5MB.');
+            input.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            input.setAttribute('data-file', e.target.result);
+            const statusSpan = input.nextElementSibling;
+            if (statusSpan) statusSpan.textContent = 'File selected: ' + file.name;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
 function createCertificationItem(cert = {}, index) {
     const div = document.createElement('div');
     div.className = 'dynamic-item';
@@ -794,6 +813,13 @@ function createCertificationItem(cert = {}, index) {
                 <label>Year</label>
                 <input type="text" class="cert-year" value="${cert.year || ''}" placeholder="2023">
             </div>
+            <div class="form-group full-width">
+                <label>Certificate File (Image/PDF)</label>
+                <input type="file" accept="image/*,.pdf" onchange="handleCertFileUpload(this)" ${cert.file ? 'data-file="' + cert.file + '"' : ''}>
+                <span class="file-status" style="font-size: 0.85rem; color: #9ca3af; display: block; margin-top: 5px;">
+                    ${cert.file ? 'File currently uploaded' : 'No file selected'}
+                </span>
+            </div>
         </div>
     `;
     return div;
@@ -803,7 +829,8 @@ function addCertification() {
     cvData.certifications.push({
         name: '',
         organization: '',
-        year: ''
+        year: '',
+        file: null
     });
     renderCertificationsList();
 }
@@ -818,7 +845,8 @@ function collectCertificationsData() {
     return Array.from(items).map(item => ({
         name: item.querySelector('.cert-name').value,
         organization: item.querySelector('.cert-org').value,
-        year: item.querySelector('.cert-year').value
+        year: item.querySelector('.cert-year').value,
+        file: item.querySelector('input[type="file"]').getAttribute('data-file') || null
     }));
 }
 

@@ -218,6 +218,10 @@ function renderCertifications(certifications) {
             <h3>${cert.name}</h3>
             <p>${cert.organization}</p>
             <span class="cert-date">${cert.year}</span>
+            ${cert.file ? `
+            <a href="${cert.file}" target="_blank" class="view-cert-btn">
+                <i class="fas fa-eye"></i> View Certificate
+            </a>` : ''}
         </div>
     `).join('');
 }
