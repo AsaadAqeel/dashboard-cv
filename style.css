@@ -1220,58 +1220,214 @@ body[data-theme="orange"],
 }
 
 /* ===== PRINT STYLES (PDF Generation) ===== */
+/* ===== PRINT STYLES (PDF Generation) ===== */
 @media print {
+    @page {
+        margin: 0;
+        size: auto;
+    }
 
-    /* Hide UI Elements */
+    /* Helper Classes to Hide UI */
     .navbar,
     .hero-buttons,
     .scroll-top-btn,
     .hamburger,
     .btn-nav,
     .view-cert-btn,
-    .view-file-btn {
+    .view-file-btn,
+    .nav-actions {
         display: none !important;
     }
 
-    /* Reset Body */
+    /* Reset Body & Containers */
     body {
+        margin: 0;
+        padding: 0;
         background: white !important;
-        color: black !important;
+        color: #1f2937 !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+        font-size: 11pt;
+        /* Optimal print reading size */
+        font-family: 'Inter', sans-serif !important;
     }
 
-    /* Sections */
+    /* HERO SECTION REDESIGN */
+    .hero {
+        min-height: auto !important;
+        padding: 40px 50px !important;
+        background: var(--gray-100) !important;
+        /* Light distinctive header */
+        color: #111 !important;
+        text-align: left !important;
+        display: flex !important;
+        flex-direction: row !important;
+        /* Side-by-side layout */
+        align-items: center !important;
+        justify-content: space-between !important;
+        border-bottom: 3px solid var(--violet) !important;
+    }
+
+    .hero-content {
+        max-width: 100% !important;
+        margin: 0 !important;
+        text-align: left !important;
+        transform: none !important;
+        /* Remove parallax */
+    }
+
+    .hero-text h1 {
+        font-size: 28pt !important;
+        color: var(--violet-dark) !important;
+        /* Use theme color */
+        margin-bottom: 5px !important;
+        text-shadow: none !important;
+        background: none !important;
+        -webkit-text-fill-color: initial !important;
+    }
+
+    .tagline {
+        font-size: 14pt !important;
+        color: #4b5563 !important;
+        margin-bottom: 15px !important;
+        opacity: 1 !important;
+    }
+
+    .location {
+        color: #6b7280 !important;
+        font-size: 10pt !important;
+    }
+
+    /* Profile Image */
+    .profile-img-container {
+        width: 140px !important;
+        height: 140px !important;
+        margin: 0 !important;
+        order: 2;
+        /* Move to right */
+        border: 4px solid var(--violet) !important;
+        box-shadow: none !important;
+    }
+
+    /* MAIN CONTENT LAYOUT */
+    .container {
+        max-width: 100% !important;
+        padding: 20px 50px !important;
+        width: 100% !important;
+    }
+
     section {
+        padding: 15px 0 !important;
+        margin-bottom: 20px !important;
         break-inside: avoid;
-        page-break-inside: avoid;
-        padding: 20px 0 !important;
     }
 
-    /* Cards */
+    h2.section-title {
+        font-size: 16pt !important;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+        color: #111 !important;
+        text-align: left !important;
+        display: block !important;
+    }
+
+    h2.section-title::after {
+        display: none !important;
+        /* Remove centered line decoration */
+    }
+
+    /* Grid Layouts for Print */
+    .skills-grid,
+    .cert-grid,
+    .awards-grid,
+    .education-cards,
+    .projects-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        /* 2 Column Layout */
+        gap: 20px !important;
+    }
+
+    /* Contact Info Bar (restyle hero-buttons/socials if we want them visible, 
+       but currently hidden. Assuming user wants cleaner look without buttons) */
+
+    /* CARDS STYLING */
     .experience-card,
     .education-card,
     .project-card,
     .cert-card,
-    .award-card {
-        break-inside: avoid;
-        page-break-inside: avoid;
-        background: #f9fafb !important;
-        /* Light gray for print contrast */
-        border: 1px solid #e5e7eb !important;
+    .award-card,
+    .skill-item {
+        background: transparent !important;
+        border: none !important;
         box-shadow: none !important;
+        padding: 0 !important;
+        margin-bottom: 10px !important;
+        break-inside: avoid;
+    }
+
+    .experience-card {
+        border-left: 3px solid var(--violet) !important;
+        padding-left: 15px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Card Typography */
+    .experience-header h3,
+    .edu-content h3,
+    .project-content h3,
+    .cert-card h3,
+    .award-content h3 {
+        color: #111 !important;
+        font-size: 12pt !important;
+        margin-bottom: 2px !important;
+        font-weight: 700 !important;
+    }
+
+    .role,
+    .institution,
+    .project-tech,
+    .cert-org {
+        color: #4b5563 !important;
+        font-weight: 600 !important;
+        font-size: 10.5pt !important;
+    }
+
+    .date,
+    .grad-date,
+    .cert-date {
+        color: #6b7280 !important;
+        font-size: 9pt !important;
+        font-style: italic;
+    }
+
+    /* Skills specific */
+    .skill-info {
+        margin-bottom: 4px;
+        font-weight: 500;
+        color: #374151 !important;
+    }
+
+    .skill-bar {
+        height: 6px !important;
+        background: #e5e7eb !important;
+        border: none !important;
+        border-radius: 3px !important;
+    }
+
+    .skill-progress {
+        background: var(--violet) !important;
+        -webkit-print-color-adjust: exact !important;
     }
 
     /* Links */
     a {
-        text-decoration: underline;
-        color: #2563eb !important;
-        /* Standard blue for links */
+        text-decoration: none !important;
+        color: var(--violet) !important;
     }
 
-    /* Ensure links work and are visible */
-    a[href]:after {
-        content: none !important;
-        /* Don't show URL text after links */
+    p {
+        line-height: 1.5 !important;
     }
 }
