@@ -1219,11 +1219,59 @@ body[data-theme="orange"],
     --gradient-secondary: linear-gradient(135deg, var(--violet-dark) 0%, var(--violet) 100%);
 }
 
-/* PDF Generation Helpers */
-body.generating-pdf .navbar,
-body.generating-pdf .hero-buttons,
-body.generating-pdf .scroll-top-btn,
-body.generating-pdf .hamburger,
-body.generating-pdf .btn-nav {
-    display: none !important;
+/* ===== PRINT STYLES (PDF Generation) ===== */
+@media print {
+
+    /* Hide UI Elements */
+    .navbar,
+    .hero-buttons,
+    .scroll-top-btn,
+    .hamburger,
+    .btn-nav,
+    .view-cert-btn,
+    .view-file-btn {
+        display: none !important;
+    }
+
+    /* Reset Body */
+    body {
+        background: white !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Sections */
+    section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        padding: 20px 0 !important;
+    }
+
+    /* Cards */
+    .experience-card,
+    .education-card,
+    .project-card,
+    .cert-card,
+    .award-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        background: #f9fafb !important;
+        /* Light gray for print contrast */
+        border: 1px solid #e5e7eb !important;
+        box-shadow: none !important;
+    }
+
+    /* Links */
+    a {
+        text-decoration: underline;
+        color: #2563eb !important;
+        /* Standard blue for links */
+    }
+
+    /* Ensure links work and are visible */
+    a[href]:after {
+        content: none !important;
+        /* Don't show URL text after links */
+    }
 }
