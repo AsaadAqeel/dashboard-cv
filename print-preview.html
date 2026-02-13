@@ -111,6 +111,59 @@
             margin: 0 !important;
             width: 100% !important;
         }
+
+        /* ===== A4 PRINT OVERRIDES ===== */
+        .preview-container .container {
+            width: 100% !important;
+            max-width: none !important;
+            padding: 0 40px !important;
+            /* Standard print margin */
+        }
+
+        .preview-container section {
+            padding: 20px 0 !important;
+            /* Reduce vertical padding */
+        }
+
+        .preview-container .section-header {
+            margin-bottom: 20px !important;
+        }
+
+        .preview-container .hero-content {
+            gap: 30px !important;
+            padding: 40px 40px 0 !important;
+        }
+
+        .preview-container .hero-text h1 {
+            font-size: 48px !important;
+            /* Scale down title */
+        }
+
+        .preview-container .summary-text,
+        .preview-container p {
+            font-size: 14px !important;
+            /* Readable print size */
+        }
+
+        /* Prevent awkward page breaks */
+        .experience-card,
+        .project-card,
+        .education-card,
+        .cert-card,
+        .award-card,
+        .skill-category {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 20px !important;
+        }
+
+        .skills-grid {
+            gap: 30px !important;
+        }
+
+        .section-header h2 {
+            font-size: 28px !important;
+        }
     </style>
 </head>
 
