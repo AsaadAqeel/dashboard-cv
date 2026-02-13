@@ -1447,7 +1447,687 @@ body.generating-pdf .footer {
     display: none !important;
 }
 
-body.generating-pdf {
+/* ===== PRINTING STATE ===== */
+body.printing {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    margin: 0 auto;
+    background: white;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    font-size: 10pt;
+    line-height: 1.4;
     overflow: visible !important;
     height: auto !important;
+}
+
+/* Hide everything by default when printing */
+body.printing>* {
+    display: none !important;
+}
+
+/* Show only main content elements we want */
+body.printing .hero,
+body.printing .contact-info,
+body.printing .summary,
+body.printing .experience,
+body.printing .skills,
+body.printing .education,
+body.printing .projects,
+body.printing .certifications,
+body.printing .awards {
+    display: block !important;
+}
+
+/* Force Light Mode & Reset */
+body.printing * {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    text-shadow: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* Header (Hero) Redesign for Print */
+body.printing .hero {
+    border-bottom: 2px solid #000 !important;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+body.printing .hero-content {
+    display: block !important;
+    text-align: center !important;
+    padding: 0;
+}
+
+body.printing .hero-text h1 {
+    font-size: 24pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    color: #000 !important;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+body.printing .tagline {
+    font-size: 14pt;
+    color: #444 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+body.printing .location {
+    display: none;
+}
+
+/* Contact Info */
+body.printing .contact-info {
+    padding: 5px 0 0 0;
+    margin-bottom: 0;
+    text-align: center;
+    background: transparent !important;
+}
+
+body.printing .contact-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+body.printing .contact-item {
+    padding: 0;
+    background: transparent !important;
+    color: #000 !important;
+    font-size: 9pt;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: none !important;
+}
+
+body.printing .contact-item i {
+    font-size: 10pt;
+    color: #000 !important;
+}
+
+/* Sections */
+body.printing section {
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+body.printing .container {
+    padding: 0;
+    max-width: 100%;
+}
+
+body.printing .section-header {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 3px;
+    display: flex;
+    align-items: center;
+}
+
+body.printing .section-header h2 {
+    font-size: 12pt;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+    color: #000 !important;
+}
+
+body.printing .section-number {
+    display: none;
+}
+
+/* Content Items */
+body.printing .timeline,
+body.printing .education-cards,
+body.printing .projects-grid,
+body.printing .cert-grid,
+body.printing .awards-grid {
+    display: block !important;
+}
+
+body.printing .experience-card,
+body.printing .education-card,
+body.printing .project-card,
+body.printing .cert-card,
+body.printing .award-card {
+    background: transparent !important;
+    padding: 0;
+    margin-bottom: 12px;
+    border: none !important;
+    page-break-inside: avoid;
+}
+
+body.printing .experience-header,
+body.printing .project-content h3 {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+    margin-bottom: 2px !important;
+}
+
+body.printing h3 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #000 !important;
+    margin: 0;
+}
+
+body.printing .role {
+    display: block;
+    font-size: 10pt;
+    font-style: italic;
+    color: #444 !important;
+    margin-bottom: 2px;
+}
+
+body.printing .date,
+body.printing .grad-date,
+body.printing .cert-date,
+body.printing .award-year {
+    font-size: 9pt;
+    font-weight: 600;
+    background: transparent !important;
+    color: #000 !important;
+    padding: 0;
+}
+
+/* Lists */
+body.printing .achievements li,
+body.printing .project-content p {
+    font-size: 9pt;
+    margin-bottom: 2px;
+    padding-left: 15px;
+    color: #333 !important;
+    list-style: none;
+}
+
+body.printing .achievements li::before {
+    content: '•';
+    color: #000;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* Skills */
+body.printing .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+body.printing .skill-category h3 {
+    font-size: 11pt;
+    border-bottom: 1px dotted #999;
+    margin-bottom: 5px;
+}
+
+body.printing .skill-item {
+    margin-bottom: 2px;
+    display: flex;
+    justify-content: space-between;
+}
+
+body.printing .skill-info {
+    font-size: 9pt;
+    width: 100%;
+}
+
+body.printing .skill-bar,
+body.printing .skill-info span:last-child {
+    display: none !important;
+}
+
+/* Hide Web Elements */
+body.printing .hero-buttons,
+body.printing .hero-bg-shapes,
+body.printing .profile-image,
+body.printing .navbar,
+body.printing .hamburger,
+body.printing .footer,
+body.printing .scroll-top-btn,
+body.printing .view-file-btn,
+body.printing .project-links,
+body.printing .project-image,
+body.printing .edu-icon,
+body.printing .award-icon,
+body.printing .cert-card i,
+body.printing .timeline::before,
+body.printing .experience-card::before {
+    display: none !important;
+}
+
+/* ===== MODAL & PRINT PREVIEW ===== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal.show {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background-color: var(--gray-800);
+    margin: 2% auto;
+    /* Reduced margin to fit A4 better on smaller screens */
+    width: 95%;
+    /* Wider to accommodate A4 width if possible */
+    max-width: 1000px;
+    height: 95vh;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--gray-600);
+}
+
+.modal-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--gray-600);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--gray-800);
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h2 {
+    color: var(--white);
+    margin: 0;
+    font-size: 20px;
+}
+
+.close-modal {
+    color: var(--gray-300);
+    font-size: 28px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: var(--white);
+}
+
+.modal-body {
+    padding: 40px;
+    flex: 1;
+    overflow-y: auto;
+    /* Enable scrolling */
+    background: var(--black);
+    display: block;
+    /* Change from flex to block to allow natural scrolling */
+    position: relative;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--gray-600);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: var(--gray-800);
+    border-radius: 0 0 12px 12px;
+    flex-shrink: 0;
+    /* Don't shrink footer */
+}
+
+/* Center the A4 page within the block body */
+.a4-page {
+    margin: 0 auto;
+}
+
+/* A4 Page Simulation - Professional Resume Redesign */
+.a4-page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    /* Standard professional margins */
+    background: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    color: #000;
+    font-family: 'Times New Roman', Times, serif;
+    /* Classic Serif for print, or keep Arial/Poppins if modern desired */
+    font-family: 'Poppins', sans-serif;
+    /* Keeping Poppins for consistency but clean */
+    font-size: 10pt;
+    line-height: 1.4;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+/* Ensure PDF generator allows full expansion */
+.pdf-gen-container .a4-page {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+}
+
+/* === PRINT FRIENDLY OVERRIDES === */
+
+/* General Reset inside A4 */
+.a4-page * {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    text-shadow: none !important;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.a4-page p {
+    margin-bottom: 5px;
+    color: #333 !important;
+}
+
+.a4-page a {
+    text-decoration: none !important;
+    color: #000 !important;
+}
+
+/* Header Section (Hero) */
+.a4-page .hero {
+    border-bottom: 2px solid #000;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    display: block !important;
+}
+
+.a4-page .hero-content {
+    display: block !important;
+    text-align: center !important;
+}
+
+.a4-page .hero-text h1 {
+    font-size: 24pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.a4-page .tagline {
+    font-size: 14pt;
+    font-weight: 500;
+    color: #444 !important;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.a4-page .location {
+    display: none;
+    /* Usually part of contact info now */
+}
+
+/* Contact Info - Single Line */
+.a4-page .contact-info {
+    margin-bottom: 0;
+    padding: 5px 0 0 0;
+    text-align: center;
+    display: block !important;
+    border: none;
+}
+
+.a4-page .contact-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.a4-page .contact-item {
+    font-size: 9pt;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.a4-page .contact-item i {
+    font-size: 10pt;
+    /* content: none; /* Optional: hide icons for stricter look */
+}
+
+/* Section Common Styles */
+.a4-page section {
+    margin-bottom: 15px;
+    padding: 0;
+    display: block !important;
+}
+
+.a4-page .section-header {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 3px;
+    display: flex;
+    align-items: center;
+}
+
+.a4-page .section-header h2 {
+    font-size: 12pt;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.a4-page .section-number {
+    display: none;
+}
+
+/* Experience & Education - Linear Layout */
+.a4-page .timeline,
+.a4-page .education-cards,
+.a4-page .projects-grid,
+.a4-page .cert-grid,
+.a4-page .awards-grid {
+    display: block !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* Cards as simple blocks */
+.a4-page .experience-card,
+.a4-page .education-card,
+.a4-page .project-card,
+.a4-page .cert-card,
+.a4-page .award-cardElement {
+    margin-bottom: 12px !important;
+    page-break-inside: avoid;
+}
+
+.a4-page .experience-header,
+.a4-page .project-content h3 {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+    margin-bottom: 2px !important;
+}
+
+.a4-page h3 {
+    /* Job Title / Degree */
+    font-size: 11pt;
+    font-weight: 700;
+    margin: 0;
+}
+
+.a4-page .company-info h3,
+.a4-page .project-content h3 {
+    font-size: 11pt;
+    font-weight: 700;
+}
+
+.a4-page .role {
+    /* Company Name / Institution in sub-line */
+    display: block;
+    font-size: 10pt;
+    font-style: italic;
+    color: #444 !important;
+    margin-bottom: 2px;
+}
+
+.a4-page .date,
+.a4-page .grad-date,
+.a4-page .cert-date,
+.a4-page .award-year {
+    font-size: 9pt;
+    font-weight: 600;
+    background: transparent !important;
+    color: #000 !important;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.a4-page .achievements li,
+.a4-page .project-content p {
+    font-size: 9pt;
+    margin-bottom: 2px;
+    padding-left: 15px;
+    border: none !important;
+}
+
+.a4-page .achievements li::before {
+    content: '•';
+    color: #000;
+    font-weight: bold;
+    left: 0;
+}
+
+/* Projects specifics */
+.a4-page .project-image,
+.a4-page .project-links {
+    display: none !important;
+}
+
+.a4-page .project-content {
+    padding: 0 !important;
+}
+
+.a4-page .project-tech {
+    margin-top: 2px;
+    font-size: 9pt;
+    font-style: italic;
+    color: #555 !important;
+    display: block;
+}
+
+.a4-page .project-tech span {
+    display: inline;
+    background: none;
+    padding: 0;
+    margin-right: 5px;
+}
+
+.a4-page .project-tech span::after {
+    content: ',';
+}
+
+.a4-page .project-tech span:last-child::after {
+    content: '';
+}
+
+/* Skills - Simple List or Columns */
+.a4-page .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.a4-page .skill-category {
+    margin-bottom: 10px;
+}
+
+.a4-page .skill-category h3 {
+    font-size: 11pt;
+    border-bottom: 1px dotted #999;
+    margin-bottom: 5px;
+    padding-bottom: 2px;
+}
+
+/* Hide bars, show text */
+.a4-page .skill-item {
+    margin-bottom: 2px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.a4-page .skill-info {
+    font-size: 9pt;
+    width: 100%;
+    margin: 0;
+}
+
+.a4-page .skill-info span:last-child {
+    display: none;
+    /* Hide percentages for cleaner look? Or keep them */
+    /* font-weight: bold; */
+}
+
+.a4-page .skill-bar {
+    display: none !important;
+}
+
+/* Unwanted Elements */
+.a4-page .hero-buttons,
+.a4-page .hero-bg-shapes,
+.a4-page .profile-image,
+.a4-page .navbar,
+.a4-page .hamburger,
+.a4-page .footer,
+.a4-page .scroll-top-btn,
+.a4-page .view-file-btn,
+.a4-page .btn {
+    display: none !important;
+}
+
+/* Remove icons from headers to save vertical space? Option */
+.a4-page .edu-icon,
+.a4-page .award-icon,
+.a4-page .cert-card i {
+    display: none !important;
 }

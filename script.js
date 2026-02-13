@@ -490,39 +490,97 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // ===== PDF EXPORT =====
-function downloadPDF() {
-    const element = document.body;
-    const opt = {
-        margin: [0, 0, 0, 10], // Top, Left, Bottom, Right
-        filename: 'my-resume.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-            scale: 2,
-            useCORS: true,
-            scrollY: 0,
-            logging: false
-        },
-        jsPDF: {
-            unit: 'mm',
-            format: 'a4',
-            orientation: 'portrait'
-        },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    };
+// ===== PDF EXPORT & PREVIEW =====
+const modal = document.getElementById('print-preview-modal');
+const closeBtn = document.querySelector('.close-modal');
+const cancelBtn = document.querySelector('.close-modal-btn');
+const saveBtn = document.getElementById('save-pdf-btn');
+const previewFrame = document.getElementById('pdf-preview-frame');
 
-    // Add class for print styling
-    document.body.classList.add('generating-pdf');
+// Store the generated PDF object to save later
+let generatedPdf = null;
 
-    // Generate PDF
-    html2pdf().set(opt).from(element).save().then(() => {
-        // Remove class
-        document.body.classList.remove('generating-pdf');
-    }).catch(err => {
-        console.error('PDF generation error:', err);
-        document.body.classList.remove('generating-pdf');
-        alert('Error generating PDF. Please try again.');
-    });
+function openPrintPreview() {
+    // 1. Add printing class to body to transform layout
+    document.body.classList.add('printing');
+
+    // UI Feedback
+    const btn = document.querySelector('.hero-buttons .btn-secondary'); // "Download CV" button
+    const originalText = btn.textContent;
+    btn.textContent = 'Preparing Preview...';
+    btn.disabled = true;
+
+    // 2. Wait for CSS to apply (small delay)
+    setTimeout(() => {
+        // 3. Generate PDF Blob
+        const opt = {
+            margin: [10, 0, 10, 0], // Top, Left, Bottom, Right margins
+            filename: 'my-resume.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                scrollY: 0
+            },
+            jsPDF: {
+                unit: 'mm',
+                format: 'a4',
+                orientation: 'portrait'
+            },
+            pagebreak: { mode: ['css', 'legacy'] }
+        };
+
+        // Generate the PDF worker
+        const worker = html2pdf().set(opt).from(document.body).toPdf();
+
+        worker.get('pdf').then(function (pdfObject) {
+            // 4. Capture Blob
+            generatedPdf = pdfObject; // Store for saving later (if needed, but blob is better)
+            const blob = pdfObject.output('blob');
+            const blobUrl = URL.createObjectURL(blob);
+
+            // 5. Reset State
+            document.body.classList.remove('printing');
+            btn.textContent = originalText;
+            btn.disabled = false;
+
+            // 6. Show Preview
+            previewFrame.src = blobUrl;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            // Setup Save Button
+            saveBtn.onclick = function () {
+                // Trigger download
+                pdfObject.save('my-resume.pdf');
+                closePrintModal();
+            };
+
+        }).catch(err => {
+            console.error('PDF generation error:', err);
+            document.body.classList.remove('printing');
+            btn.textContent = originalText;
+            btn.disabled = false;
+            alert('Error generating preview. Please try again.');
+        });
+
+    }, 100);
 }
+
+function closePrintModal() {
+    modal.classList.remove('show');
+    document.body.style.overflow = 'auto';
+    // Clear iframe to free memory
+    previewFrame.src = '';
+}
+
+// Event Listeners for Modal
+if (closeBtn) closeBtn.addEventListener('click', closePrintModal);
+if (cancelBtn) cancelBtn.addEventListener('click', closePrintModal);
+window.addEventListener('click', (e) => {
+    if (e.target === modal) closePrintModal();
+});
 
 
 console.log('🚀 CV Website loaded successfully!');

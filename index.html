@@ -23,7 +23,8 @@
             <a href="#skills">Skills</a>
             <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
-            <a href="dashboard.html" class="btn-nav">Edit CV</a>
+            <a href="#contact">Contact</a>
+            <!-- <a href="dashboard.html" class="btn-nav">Edit CV</a> -->
         </div>
         <div class="hamburger">
             <span></span>
@@ -41,7 +42,7 @@
                 <p class="location"><i class="fas fa-map-marker-alt"></i> San Francisco, CA</p>
                 <div class="hero-buttons">
                     <a href="#contact" class="btn btn-primary">Get In Touch</a>
-                    <a href="#" class="btn btn-secondary" onclick="downloadPDF()">Download CV</a>
+                    <a href="dashboard.html" class="btn btn-secondary">Edit CV</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -473,6 +474,23 @@
             </div>
         </div>
     </footer>
+
+    <!-- Print Preview Modal -->
+    <div id="print-preview-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Print Preview</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdf-preview-frame" style="width: 100%; height: 100%; border: none;"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal-btn">Cancel</button>
+                <button id="save-pdf-btn" class="btn btn-primary">Save PDF</button>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="script.js"></script>
